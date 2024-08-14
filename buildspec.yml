@@ -6,10 +6,11 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 010526249026.dkr.ecr.us-east-1.amazonaws.com
   build:
-  commands:
+    commands:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t coworking-analytics ./analytics
+      - docker tag coworking-analytics:latest 010526249026.dkr.ecr.us-east-1.amazonaws.com/coworking-analytics:$CODEBUILD_BUILD_NUMBER
   post_build:
     commands:
       - echo Build completed on `date`
@@ -20,3 +21,4 @@ artifacts:
   files:
     - '**/*'
   discard-paths: yes
+
